@@ -20,7 +20,7 @@ def package_data(pkg, roots):
 
 setup(
     name='mediacms-xblock',
-    version='0.1',
+    version='0.1.1',
     description='MediaCMS XBlock',   
     packages=[
         'mediacms',

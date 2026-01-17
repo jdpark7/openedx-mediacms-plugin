@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: tutor-mediacms
+Version: 0.1.0
+Summary: A Tutor plugin for MediaCMS integration
+Author: MediaCMS
+Author-email: contact@mediacms.io
+License: AGPLv3
+Dynamic: author
+Dynamic: author-email
+Dynamic: license
+Dynamic: summary

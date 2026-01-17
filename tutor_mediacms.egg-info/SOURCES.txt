@@ -1,0 +1,8 @@
+setup.py
+tutor_mediacms/__init__.py
+tutor_mediacms/plugin.py
+tutor_mediacms.egg-info/PKG-INFO
+tutor_mediacms.egg-info/SOURCES.txt
+tutor_mediacms.egg-info/dependency_links.txt
+tutor_mediacms.egg-info/entry_points.txt
+tutor_mediacms.egg-info/top_level.txt

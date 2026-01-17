@@ -1,0 +1,24 @@
+.mediacms_block .mediacms-video-wrapper {
+    position: relative;
+    width: 100%;
+    /* Standard Open edX width constraint for video components */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Ensure VideoJS respects the container */
+.mediacms_block .video-js {
+    width: 100%;
+}
+
+/* Completion indicator text style */
+.mediacms-progress-info {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.mediacms-completed {
+    color: #008000;
+    /* Green for completion */
+}

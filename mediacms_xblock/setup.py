@@ -21,7 +21,10 @@ def package_data(pkg, roots):
 setup(
     name='mediacms-xblock',
     version='0.1.1',
-    description='MediaCMS XBlock',   
+    description='MediaCMS XBlock',
+    license='AGPL-3.0',
+    author='JD Park',
+    author_email='jdpark@pcu.ac.kr',  # Assuming email or placeholder
     packages=[
         'mediacms',
     ],

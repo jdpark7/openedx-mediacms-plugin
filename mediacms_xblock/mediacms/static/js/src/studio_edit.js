@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 JD Park, Pai Chai University & UNSIA
+ *
+ * This software is licensed under the GNU Affero General Public License v3.0 (AGPLv3).
+ * See the LICENSE file for details.
+ */
 function MediaCMSStudioXBlock(runtime, element) {
     $(element).find('.save-button').unbind('click').bind('click', function () {
         console.log('MediaCMS: Save button clicked');

@@ -1,4 +1,11 @@
-"""MediaCMS XBlock logic."""
+"""
+Copyright (c) 2026 JD Park, Pai Chai University & UNSIA
+
+This software is licensed under the GNU Affero General Public License v3.0 (AGPLv3).
+See the LICENSE file for details.
+
+MediaCMS XBlock logic.
+"""
 
 import pkg_resources
 import logging

@@ -10,7 +10,6 @@ from urllib.parse import urlparse, parse_qs
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Integer, List, Float
 from xblock.fragment import Fragment
-from web_fragments.fragment import Fragment
 
 log = logging.getLogger(__name__)
 
@@ -115,6 +114,17 @@ class MediaCMSXBlock(XBlock):
         when viewing courses.
         """
         context = context or {}
+
+        # Check for URL change and reset progress immediately (Server-Side Logic)
+        if not self.last_watched_url:
+             # First time init
+             self.last_watched_url = self.mediacms_url
+        elif self.mediacms_url != self.last_watched_url:
+             # URL changed since last view
+
+             self.progress = 0
+             self.watched_ranges = []
+             self.last_watched_url = self.mediacms_url
         
         # Prepare context variables
         video_src = self.mediacms_url
@@ -247,12 +257,15 @@ class MediaCMSXBlock(XBlock):
 
         # Simple verification: don't allow regression unless resetting? 
         # Actually user might replay. But max progress counts.
+
+        
         if client_progress > self.progress:
             self.progress = client_progress
         
         # Check completion
         # If progress >= threshold, we emit completion grade
         if self.progress >= self.completion_percentage:
+
             self.runtime.publish(self, 'grade', {
                 'value': 1.0,
                 'max_value': 1.0,
@@ -266,14 +279,14 @@ class MediaCMSXBlock(XBlock):
         return {'progress': self.progress}
 
     @XBlock.json_handler
-    def reset_progress_on_change(self, data, suffix=''):
+    def publish_completion(self, data, suffix=''):
         """
-        Handler to reset progress if the student is viewing a new video URL.
+        Handler to accept completion publication from LMS.
         """
-        self.progress = 0
-        self.watched_ranges = []
-        self.last_watched_url = self.mediacms_url
-        return {'result': 'reset', 'progress': 0}
+
+        return {'result': 'ok'}
+
+
 
     @staticmethod
     def workbench_scenarios():

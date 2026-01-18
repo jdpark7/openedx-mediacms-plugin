@@ -1,5 +1,6 @@
 /* Javascript for MediaCMSXBlock. */
 function MediaCMSXBlock(runtime, element, args) {
+
     args = args || {};
 
 
@@ -11,6 +12,7 @@ function MediaCMSXBlock(runtime, element, args) {
     // Check if we are in Studio to prevent preview issues
     var isStudio = window.location.hostname.indexOf('studio') !== -1 || $(element).closest('.studio-xblock-wrapper').length > 0;
     if (isStudio) {
+
         return;
     }
 
@@ -44,37 +46,8 @@ function MediaCMSXBlock(runtime, element, args) {
     };
 
     // Check for URL change and reset if needed
-    if (args.last_watched_url && args.mediacms_url !== args.last_watched_url) {
-        // The author changed the video since we last watched.
-        // We must reset the progress on the server.
-        var resetUrl = runtime.handlerUrl(element, 'reset_progress_on_change');
-        $.ajax({
-            type: "POST",
-            url: resetUrl,
-            data: JSON.stringify({}),
-            success: function (response) {
-                viewedRanges = [];
-                lastUpdate = 0;
-                updateProgressUI(0);
-            }
-        });
-    } else if (!args.last_watched_url && args.mediacms_url) {
-        // First time viewing, or migration. Set the last watched without resetting manually 
-        // (or rely on the regular save to set it eventually, but safer to sync)
-        var resetUrl = runtime.handlerUrl(element, 'reset_progress_on_change');
-        $.ajax({
-            type: "POST",
-            url: resetUrl,
-            data: JSON.stringify({}),
-            success: function (response) {
-                // Just syncing the URL for the first time
-                // Since the server resets progress on this call, we must update UI
-                viewedRanges = [];
-                lastUpdate = 0;
-                updateProgressUI(0);
-            }
-        });
-    }
+    // NOTE: This logic has been moved to the backend (mediacms.py) for reliability.
+    // The server now resets progress before rendering if the URL has changed.
 
     var reportProgress = function (percent) {
         var handlerUrl = runtime.handlerUrl(element, 'report_progress');
@@ -86,7 +59,10 @@ function MediaCMSXBlock(runtime, element, args) {
                 watched_ranges: viewedRanges
             }),
             success: function (data) {
-                // logger('Progress saved: ' + percent);
+
+            },
+            error: function (xhr, status, error) {
+                console.error('MediaCMS: Progress save failed', error);
             }
         });
     };
@@ -150,7 +126,7 @@ function MediaCMSXBlock(runtime, element, args) {
             controls: true,
             autoplay: false,
             preload: 'auto',
-            fluid: true,
+            fluid: false, // Using CSS padding hack for sizing
             playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2]
         });
         player.on('timeupdate', onTimeUpdate);
